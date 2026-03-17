@@ -1,0 +1,11 @@
+{
+  "TPX_Buildings_0": { "type": "residential" },
+  "TPX_Buildings_3": { "type": "business", "bizType": "Retail" },
+  "TPX_Buildings_6": { "type": "government", "govOffice": "Barangay Hall" },
+  "TPX_Buildings_624": {"type": "government", "govOffice": "Barangay Hall"},
+"TPX_Buildings_629": {"type": "residential"},
+  "TPX_Buildings_611":{"type": "business", "bizType": "Shopee Warehouse"}
+
+
+
+}

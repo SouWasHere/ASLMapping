@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barangay Map Viewer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ── Sidebar ── -->
+  <aside>
+    <header>
+      <div class="logo"><div class="logo-dot"></div><div class="logo-text">Barangay GIS</div></div>
+      <div class="title">Building Map</div>
+      <div class="sub">Click a building to view info.</div>
+    </header>
+    <div class="controls">
+      <div class="row">
+        <div id="status">Loading…</div>
+        <button id="resetView" class="btn">Fit</button>
+        <button id="clearSel"  class="btn">Clear</button>
+      </div>
+      <input id="search" class="search" placeholder="Search building or address…" />
+    </div>
+    <div id="list" class="list"></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#4ade80"></div>Residents</div>
+      <div class="leg"><div class="leg-dot" style="background:#f97316"></div>Business</div>
+      <div class="leg"><div class="leg-dot" style="background:#ef4444"></div>Government</div>
+    </div>
+    <footer>
+      <span>L-drag</span> orbit &nbsp;·&nbsp; <span>Scroll</span> zoom &nbsp;·&nbsp; <span>R-drag</span> pan
+    </footer>
+  </aside>
+
+  <!-- ── 3D viewport ── -->
+  <main>
+    <canvas id="canvas"></canvas>
+
+    <div class="hud">
+      <div id="picked-label" class="hud-pill"><strong>Selected</strong>: —</div>
+      <div id="stats-pill"   class="hud-pill">—</div>
+    </div>
+
+    <!-- ── Info panel ── -->
+    <div id="res-panel">
+
+      <div class="rp-header">
+        <div class="rp-title-area">
+          <div class="rp-address" id="rp-address">—</div>
+          <div class="rp-mesh"    id="rp-mesh"></div>
+        </div>
+        <button class="rp-close" id="rp-close">✕</button>
+      </div>
+
+      <!-- Tag buttons -->
+      <div class="tag-row">
+        <button class="tag-btn active" data-type="residential">🏠 Residential</button>
+        <button class="tag-btn"        data-type="business">🏪 Business</button>
+        <button class="tag-btn"        data-type="government">🏛 Government</button>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="residents">Residents</button>
+        <button class="tab-btn"        data-tab="business">Business</button>
+        <button class="tab-btn"        data-tab="government">Government</button>
+      </div>
+
+      <!-- Residents pane -->
+      <div class="tab-pane active" data-pane="residents">
+        <div class="rp-summary">
+          <div class="stat-box">        <div class="stat-num" id="s-total">0</div> <div class="stat-lbl">Total</div></div>
+          <div class="stat-box">        <div class="stat-num" id="s-male">0</div>  <div class="stat-lbl">Male</div></div>
+          <div class="stat-box pwd">    <div class="stat-num" id="s-pwd">0</div>   <div class="stat-lbl">PWD</div></div>
+          <div class="stat-box senior"> <div class="stat-num" id="s-senior">0</div><div class="stat-lbl">Senior</div></div>
+        </div>
+        <div class="rp-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="pwd">PWD</button>
+          <button class="filter-btn" data-filter="senior">Senior</button>
+          <button class="filter-btn" data-filter="male">Male</button>
+          <button class="filter-btn" data-filter="female">Female</button>
+        </div>
+        <div class="rp-search-wrap">
+          <input class="rp-search" id="rp-search" placeholder="Search resident name…" />
+        </div>
+        <div class="rp-list" id="rp-list"></div>
+      </div>
+
+      <!-- Business pane -->
+      <div class="tab-pane" data-pane="business">
+        <div id="pane-business" class="pane-content"></div>
+      </div>
+
+      <!-- Government pane -->
+      <div class="tab-pane" data-pane="government">
+        <div id="pane-government" class="pane-content"></div>
+      </div>
+
+    </div><!-- /res-panel -->
+
+    <!-- ── Edit modal ── -->
+    <div id="modal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-title" id="modal-title">Edit Building</div>
+          <button class="modal-x" id="modal-close">✕</button>
+        </div>
+
+        <!-- Business fields -->
+        <div id="form-business">
+          <div class="field-group">
+            <label>Type of Business</label>
+            <input id="f-biz-type" type="text" placeholder="e.g. Retail, Food, Pharmacy, Services…" />
+          </div>
+        </div>
+
+        <!-- Government fields -->
+        <div id="form-government">
+          <div class="field-group">
+            <label>Office / Department Name</label>
+            <input id="f-gov-office" type="text" placeholder="e.g. Barangay Hall, Health Center…" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="modal-btn danger"  id="modal-delete">🗑 Remove Tag</button>
+          <div style="display:flex;gap:8px;">
+            <button class="modal-btn cancel" id="modal-cancel">Cancel</button>
+            <button class="modal-btn save"   id="modal-save">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Lighting ── -->
+    <div id="light-hud">
+      <div style="color:var(--accent2);margin-bottom:2px;">Lighting</div>
+      <label>Sun angle  <input type="range" id="sunAngle"  min="0"  max="360" value="45"  /></label>
+      <label>Sun height <input type="range" id="sunHeight" min="10" max="90"  value="60"  /></label>
+      <label>Exposure   <input type="range" id="exposure"  min="50" max="250" value="140" /></label>
+    </div>
+
+    <!-- ── Export button ── -->
+    <button id="export-btn" class="export-btn" title="Download updated buildings.json">⬇ Save buildings.json</button>
+
+    <!-- ── Loading overlay ── -->
+    <div id="loading">
+      <div class="load-card" id="load-card">
+        <div class="load-title">
+          <span id="load-label">Loading…</span>
+          <span id="load-pct">0%</span>
+        </div>
+        <div class="load-bar"><div id="load-bar-fill"></div></div>
+        <div id="load-msg" class="load-msg">Please wait…</div>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three":         "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="main.js"></script>
+</body>
+</html>

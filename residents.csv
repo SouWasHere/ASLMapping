@@ -1,0 +1,31 @@
+name,age,gender,isPWD,isSenior,address
+Juan dela Cruz,72,Male,FALSE,TRUE,123 Rizal Street
+Maria Santos,68,Female,TRUE,TRUE,123 Rizal Street
+Pedro Reyes,45,Male,FALSE,FALSE,123 Rizal Street
+Ana Reyes,42,Female,FALSE,FALSE,123 Rizal Street
+Jose Reyes,17,Male,FALSE,FALSE,123 Rizal Street
+Lorna Bautista,65,Female,TRUE,TRUE,124 Rizal Street
+Ramon Bautista,67,Male,FALSE,TRUE,124 Rizal Street
+Carina Flores,33,Female,FALSE,FALSE,125 Rizal Street
+Mark Flores,35,Male,FALSE,FALSE,125 Rizal Street
+Luisa Gomez,55,Female,TRUE,FALSE,1 Mabini Avenue
+Roberto Gomez,58,Male,FALSE,FALSE,1 Mabini Avenue
+Baby Gomez,8,Female,FALSE,FALSE,1 Mabini Avenue
+Tomas Navarro,71,Male,FALSE,TRUE,2 Mabini Avenue
+Elena Navarro,69,Female,TRUE,TRUE,2 Mabini Avenue
+Carla Mendoza,29,Female,FALSE,FALSE,3 Mabini Avenue
+Leo Mendoza,30,Male,FALSE,FALSE,3 Mabini Avenue
+Nora Cruz,82,Female,TRUE,TRUE,10 Bonifacio Road
+Felix Cruz,80,Male,FALSE,TRUE,10 Bonifacio Road
+Vanessa Tan,44,Female,FALSE,FALSE,11 Bonifacio Road
+Dennis Tan,47,Male,TRUE,FALSE,11 Bonifacio Road
+Alma Villanueva,61,Female,FALSE,TRUE,12 Bonifacio Road
+Eddie Villanueva,63,Male,FALSE,TRUE,12 Bonifacio Road
+Sofia Villanueva,22,Female,FALSE,FALSE,12 Bonifacio Road
+Oscar Lim,38,Male,FALSE,FALSE,50 Luna Street
+Paz Lim,36,Female,FALSE,FALSE,50 Luna Street
+Gino Lim,10,Male,FALSE,FALSE,50 Luna Street
+Marites dela Rosa,75,Female,TRUE,TRUE,51 Luna Street
+Lance Ashley Acosta,20,Male,FALSE,FALSE,34 Pipeline Pasadena Street
+Maria Violeta Acosta,65,Female,FALSE,TRUE,34 Pipeline Pasadena Street
+Gianna Darlene Cantor,67,Female ,TRUE ,FALSE,35 Pipeline Pasadena Street
